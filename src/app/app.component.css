@@ -1,0 +1,3 @@
+::ng-deep .dx-tabpanel-tabs .dx-tabs {
+  height: unset !important;
+}

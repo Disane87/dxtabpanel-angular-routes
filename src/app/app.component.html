@@ -1,0 +1,52 @@
+<div class="d-flex container-fluid flex-row h-100">
+  <div class="navigation m-3">
+    Activated tab: {{ activatedTabIndex }}
+
+    <ul class="nav flex-column nav-pills">
+      <li
+        class="nav-item"
+        [class.pt-3]="!first"
+        *ngFor="let route of routes; let first = first;"
+      >
+        <a
+          class="nav-link"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact:true}"
+          [routerLink]="route.path"
+          >{{route.component.name }}</a
+        >
+      </li>
+    </ul>
+  </div>
+
+  <div class="tabs flex-fill d-flex flex-column">
+    <dx-tab-panel
+      #tabPanel
+      [height]="'100%'"
+      [width]="'100%'"
+      [dataSource]="tabs"
+      [(selectedIndex)]="activatedTabIndex"
+      [loop]="false"
+      [scrollByContent]="true"
+      [scrollingEnabled]="true"
+      [showNavButtons]="true"
+      [animationEnabled]="false"
+      [swipeEnabled]="true"
+      (onTitleClick)="tabChanged($event)"
+    >
+      <div *dxTemplate="let tab of 'title'">
+        <div class="tab-title d-flex justify-content-between">
+          <span class="mr-1">{{tab.name}}</span>
+          <span class="ml-1" (click)="disposeTab(tab)">✖</span>
+        </div>
+      </div>
+      <div *dxTemplate="let tab of 'item'">
+        <div class="tabpanel-item p-3">
+          <ng-container
+            *ngComponentOutlet="tab.component; injector: tab.injector "
+          ></ng-container>
+        </div>
+      </div>
+    </dx-tab-panel>
+  </div>
+</div>
